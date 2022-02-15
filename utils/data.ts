@@ -27,7 +27,7 @@ for (let index = 1; index <= 32; index++) {
       pictureNumber = pictureNumber -10
     } 
     if(index === 1){
-      pictureNumber = "all"
+      pictureNumber = -1
     } 
     if(index === 32){
       pictureNumber = "owari"
@@ -35,8 +35,10 @@ for (let index = 1; index <= 32; index++) {
   const element =  {
           id: index, 
           picture: `/number_${pictureNumber}.jpg`, 
+          // picture: `/number_${pictureNumber}.jpg`, 
           title: returnTitle(pictureNumber) ?? ""
         }
   array.push(element)
 }
+
 export const data: DataProps[] = array

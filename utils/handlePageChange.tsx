@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, MutableRefObject, SetStateAction } from 'react'
 import getItemsByPage from './getItemsByPage'
 import { DataProps } from './interface'
 
@@ -13,16 +13,23 @@ interface FunctionProps {
         items: DataProps[]
         setItems: Dispatch<SetStateAction<DataProps[]>>
         hasMore: boolean
-        timeoutId: NodeJS.Timeout | null | undefined
-        setTimeoutId: Dispatch<SetStateAction<NodeJS.Timeout | null | undefined>>
-}
+        timeoutIdRef: MutableRefObject<any>
+    }
 
-        const handlePageChange = ({setLoading, currentPage, setCurrentPage, totalPages, itemsLength, setHasMore, itemsPerPage, items, setItems, hasMore, timeoutId, setTimeoutId} : FunctionProps) => {
+        const handlePageChange = ({setLoading, 
+            currentPage, 
+            setCurrentPage, 
+            totalPages, itemsLength, 
+            setHasMore, 
+            itemsPerPage, 
+            items, 
+            setItems, 
+            hasMore, 
+            timeoutIdRef} : FunctionProps) => {
             if(hasMore === false) return
             const x = () => {
                 setLoading(true)
                 const pageData = getItemsByPage({ currentPage: currentPage })
-                console.log(`pageData: ${JSON.stringify(pageData)}`)
                 const pageDataItems = pageData.currentItems
                 const itemsSoFar = itemsPerPage * (currentPage - 1) + pageDataItems.length
                 const itemsLeft = itemsLength - itemsSoFar
@@ -39,11 +46,9 @@ interface FunctionProps {
                     setHasMore(itemsLeft > 0)
                     setLoading(false)
                 }, 2000);
-                console.log(`timeoutId: ${timeoutId}`);
-                timeoutId && clearTimeout(timeoutId)
-                setTimeoutId(timeoutFunction)                    
+                clearTimeout(timeoutIdRef.current)
+                timeoutIdRef.current = timeoutFunction
             }
-
             if(currentPage > totalPages) return
             (currentPage >= 3) && x()
         }

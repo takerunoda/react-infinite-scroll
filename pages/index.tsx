@@ -6,9 +6,9 @@ import getItemsByPage from '../utils/getItemsByPage'
 import { useHandleObserverInitial } from '../utils/useHandleObserverInitial'
 import { useHandleObserver } from '../utils/useHandleObserver'
 import { DataProps } from '../utils/interface'
-import LastElement from '../Components/LastElement'
 import Reload from '../Components/Reload'
 import { usePageContext } from '../context/PageContext'
+import FirstElement from '../Components/FirstElement'
 
 
 interface PageProps { 
@@ -36,30 +36,44 @@ const Index = ({initialData} : PageProps) => {
         <p>スクロールすると</p>
         <p>次のアイテムを読み込みます ⬇️</p>
       </h2>
-      <p className={` mb-3 py-3 ${currentPage ? "text-white bg-blue-500 rounded w-72 mx-auto" :"text-green-500"} font-bold text-lg sm:text-xl `}>{`currentPage: ${JSON.stringify(currentPage)}`}</p>
-      <p className={` py-3 ${isVisible ? "text-white bg-pink-500 rounded w-72 mx-auto" :"text-purple-500"} font-bold text-lg sm:text-xl `}>{`isVisible: ${JSON.stringify(isVisible)}`}</p>
-      <p className={` py-3 ${isVisibleInitial ? "text-white bg-blue-500 rounded w-72 mx-auto" :"text-blue-500"} font-bold text-lg sm:text-xl `}>{`isVisibleInitial: ${JSON.stringify(isVisibleInitial)}`}</p>
+      <FirstElement />
       <ul className="w-11/12 mx-auto mt-8 text-center">
             {initialData && 
-            initialData.map((item, index) => <Item 
+            initialData.map((item, index) => {
+                    if(index + 1 === initialData.length){
+                        return <Item 
                         item={item} 
-                        key={index} />)}
-      <p className={` py-3 ${isVisibleInitial ? "text-white bg-blue-500 rounded w-72 mx-auto" :"text-blue-500"} font-bold text-lg sm:text-xl `}>{`isVisibleInitial: ${JSON.stringify(isVisibleInitial)}`}</p>
+                        setElement={setElementInitial} 
+                        key={index}
+                        last={true} />
+                    } else {
+                        return <Item 
+                        item={item} 
+                        setElement={setElementInitial} 
+                        key={index}
+                        last={false} />
+                    }
+                })}
       <div className="text-lg sm:text-xl font-bold px-3 mt-3">
         <p>＊最後のアイテム(2)が隠れると、</p>
         <p>true/falseが切り替わります</p>
       </div>
-      <LastElement setElement={setElementInitial} />
-          {items &&  
-            items.map((item, index) => <Item 
+          {items && 
+            items.map((item, index) => {
+                    if(index + 1 === items.length){
+                        return <Item 
                         item={item} 
-                        key={index} />)
-                }
-      <p className={` mb-3 py-3 ${currentPage ? "text-white bg-blue-500 rounded w-72 mx-auto" :"text-green-500"} font-bold text-lg sm:text-xl `}>{`currentPage: ${JSON.stringify(currentPage)}`}</p>
-      <p className={` mb-3 py-3 ${hasMore ? "text-white bg-red-500 rounded w-72 mx-auto" :"text-yellow-500"} font-bold text-lg sm:text-xl `}>{`hasMore: ${JSON.stringify(hasMore)}`}</p>
-      <p className={` mb-3 py-3 ${isVisible ? "text-white bg-pink-500 rounded w-72 mx-auto" :"text-purple-500"} font-bold text-lg sm:text-xl `}>{`isVisible: ${JSON.stringify(isVisible)}`}</p>
-      <p className={` py-3 ${isVisibleInitial ? "text-white bg-blue-500 rounded w-72 mx-auto" :"text-blue-500"} font-bold text-lg sm:text-xl `}>{`isVisibleInitial: ${JSON.stringify(isVisibleInitial)}`}</p>
-      <LastElement setElement={setElement} />
+                        setElement={setElement} 
+                        key={index}
+                        last={true} />
+                    } else {
+                        return <Item 
+                        item={item} 
+                        setElement={setElement} 
+                        key={index}
+                        last={false} />
+                    }
+                })}
       </ul>
         {loading && 
             <div className="my-5">

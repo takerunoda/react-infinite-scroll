@@ -1,4 +1,4 @@
-import { createContext, Dispatch, SetStateAction, useCallback, useContext, useMemo, useRef, useState } from "react";
+import { createContext, Dispatch, MutableRefObject, SetStateAction, useCallback, useContext, useMemo, useRef, useState } from "react";
 import getItemsByPage from "../utils/getItemsByPage";
 import handlePageChange from "../utils/handlePageChange";
 import handlePageChangeInitial from "../utils/handlePageChangeInitial";
@@ -29,10 +29,8 @@ type PageContextType = {
     setItemsPerPage: Dispatch<SetStateAction<number>>
     pageChange: any
     pageChangeInitial: any
-    timeoutId: NodeJS.Timeout | null | undefined
-    setTimeoutId: Dispatch<SetStateAction<NodeJS.Timeout | null | undefined>>
-    timeoutIdInitial: NodeJS.Timeout | null | undefined
-    setTimeoutIdInitial: Dispatch<SetStateAction<NodeJS.Timeout | null | undefined>>
+    timeoutIdRef: MutableRefObject<any>
+    timeoutIdInitialRef: MutableRefObject<any>
 }
 
 const PageContext = createContext<PageContextType | undefined>(undefined,)
@@ -50,12 +48,12 @@ export function PageWrapper({ children } : ChildrenProps) {
     const pageOne = getItemsByPage({ currentPage: 1 })
     const [totalPages, setTotalPages] = useState(pageOne.totalPages)
     const [itemsLength, setItemsLength] = useState(pageOne.itemsLength)
-    const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null | undefined>()
-    const [timeoutIdInitial, setTimeoutIdInitial] = useState<NodeJS.Timeout | null | undefined>()
+    const timeoutIdRef = useRef()
+    const timeoutIdInitialRef = useRef()
 
-    const pageChange = useCallback(() => handlePageChange({setLoading, currentPage, setCurrentPage, totalPages, itemsLength, setHasMore, itemsPerPage, items, setItems, hasMore, timeoutId, setTimeoutId}), [currentPage, hasMore, items, itemsLength, itemsPerPage, totalPages, timeoutId, setTimeoutId])
+    const pageChange = useCallback(() => handlePageChange({setLoading, currentPage, setCurrentPage, totalPages, itemsLength, setHasMore, itemsPerPage, items, setItems, hasMore, timeoutIdRef}), [currentPage, hasMore, items, itemsLength, itemsPerPage, totalPages, timeoutIdRef])
 
-    const pageChangeInitial = useCallback(() => handlePageChangeInitial({setLoading, currentPage, setCurrentPage, totalPages, itemsLength, setHasMore, itemsPerPage, items, setItems, hasMore, timeoutIdInitial, setTimeoutIdInitial}), [currentPage, hasMore, items, itemsLength, itemsPerPage, timeoutIdInitial, totalPages])
+    const pageChangeInitial = useCallback(() => handlePageChangeInitial({setLoading, currentPage, setCurrentPage, totalPages, itemsLength, setHasMore, itemsPerPage, items, setItems, hasMore, timeoutIdInitialRef}), [currentPage, hasMore, items, itemsLength, itemsPerPage, totalPages, timeoutIdInitialRef])
 
     const pageValue = useMemo(() => ({
         loading, setLoading,        
@@ -71,8 +69,8 @@ export function PageWrapper({ children } : ChildrenProps) {
         itemsLength, setItemsLength,    
         pageChange,
         pageChangeInitial,
-        timeoutId, setTimeoutId,
-        timeoutIdInitial, setTimeoutIdInitial
+        timeoutIdRef,
+        timeoutIdInitialRef,
     }), [
         loading, setLoading,        
         isVisible, setIsVisible,        
@@ -87,8 +85,8 @@ export function PageWrapper({ children } : ChildrenProps) {
         itemsLength, setItemsLength,    
         pageChange,
         pageChangeInitial,
-        timeoutId, setTimeoutId,
-        timeoutIdInitial, setTimeoutIdInitial,
+        timeoutIdRef,
+        timeoutIdInitialRef,
     ])
 
     return ( 
