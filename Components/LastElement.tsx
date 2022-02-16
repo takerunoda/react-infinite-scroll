@@ -1,11 +1,13 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, MutableRefObject, SetStateAction } from 'react'
 import { usePageContext } from '../context/PageContext'
 
 interface CompoentProps{
-    setElement: Dispatch<SetStateAction<any>>
+    // setElement: Dispatch<SetStateAction<any>>
+    elementRef: MutableRefObject<any>
 }
 
-const LastElement = ({setElement} : CompoentProps) => {
+const LastElement = ({elementRef} : CompoentProps) => {
+// const LastElement = ({setElement} : CompoentProps) => {
     const pageContext = usePageContext()
     const {currentPage, hasMore, isVisible, isVisibleInitial } = pageContext
 
@@ -15,7 +17,7 @@ const LastElement = ({setElement} : CompoentProps) => {
         <p className={` mb-1 py-2 ${isVisibleInitial ? "text-white bg-blue-500 rounded w-72 mx-auto" :"text-blue-500"} font-bold text-lg sm:text-xl `}>{`isVisibleInitial: ${JSON.stringify(isVisibleInitial)}`}</p>
         <p className={` mb-1 py-2 ${hasMore ? "text-white bg-red-500 rounded w-72 mx-auto" :"text-yellow-500"} font-bold text-lg sm:text-xl `}>{`hasMore: ${JSON.stringify(hasMore)}`}</p>
         <p className={` mb-1 py-2 ${currentPage ? "text-white bg-blue-500 rounded w-72 mx-auto" :"text-green-500"} font-bold text-lg sm:text-xl `}>{`currentPage: ${JSON.stringify(currentPage - 1)}`}</p>
-        <p className="font-bold text-orange-500 text-lg sm:text-xl py-3" ref={setElement}>
+        <p className="font-bold text-orange-500 text-lg sm:text-xl py-3" ref={elementRef}>
             ＊ Yes, I am the last one ＊
         </p>
     </div>   

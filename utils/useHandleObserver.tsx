@@ -5,9 +5,9 @@ interface FunctionProps {
     element: any
 }
 
-export const useHandleObserver = ({ element } : FunctionProps) => {
+export const useHandleObserver = () => {
         const pageContext = usePageContext()
-        const { setIsVisible, loading, pageChange  } = pageContext
+        const { setIsVisible, loading, pageChange, element, elementRef, items  } = pageContext
         const handlePageChangeRef = useRef(pageChange)
         const callback = (entries: any) => {
             if(loading) return
@@ -29,10 +29,15 @@ export const useHandleObserver = ({ element } : FunctionProps) => {
             }, [pageChange]);
 
         useEffect(() => {
+            if(!items || items.length < 1) return
             if(typeof window === "undefined") return
-            const currentElement = element
+            const currentElement = elementRef.current
+            // const currentElement = element
             const currentObserver = observer.current
+        
+            
             if(currentElement){
+                console.log(currentElement);                
                 currentObserver && currentObserver.observe(currentElement)
             }
             return () => {
@@ -40,5 +45,5 @@ export const useHandleObserver = ({ element } : FunctionProps) => {
                     currentObserver && currentObserver.unobserve(currentElement)
                 }
             }
-        }, [element])
+        }, [elementRef, items])
     }

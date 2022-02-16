@@ -1,15 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { usePageContext } from '../context/PageContext'
 
-interface FunctionProps {
-    elementInitial: any
-}
+// interface FunctionProps {
+//     elementInitial: any
+// }
 
-export const useHandleObserverInitial = ({ 
-            elementInitial
-    } : FunctionProps) => {
+export const useHandleObserverInitial = () => {
         const pageContext = usePageContext()
-        const { setIsVisibleInitial, pageChangeInitial } = pageContext
+        const { setIsVisibleInitial, pageChangeInitial, elementInitialRef } = pageContext
         const handlePageChangeInitialRef = useRef(pageChangeInitial)
         const callback = (entries: any) => {
             const firstOne = entries[0]
@@ -32,7 +30,8 @@ export const useHandleObserverInitial = ({
 
         useEffect(() => {
             if(typeof window === "undefined") return
-            const currentElement = elementInitial
+            const currentElement = elementInitialRef.current
+            // const currentElement = elementInitial
             const currentObserver = observer.current
 
             if(currentElement){
@@ -43,5 +42,5 @@ export const useHandleObserverInitial = ({
                     currentObserver && currentObserver.unobserve(currentElement)
                 }
             }
-        }, [elementInitial])
+        }, [elementInitialRef])
     }

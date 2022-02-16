@@ -45,7 +45,7 @@ interface FunctionProps {
                     setCurrentPage(prevePage => prevePage + 1)
                     setHasMore(itemsLeft > 0)
                     setLoading(false)
-                }, 2000);
+                }, 1000);
                 clearTimeout(timeoutIdRef.current)
                 timeoutIdRef.current = timeoutFunction
             }

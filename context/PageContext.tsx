@@ -31,6 +31,8 @@ type PageContextType = {
     pageChangeInitial: any
     timeoutIdRef: MutableRefObject<any>
     timeoutIdInitialRef: MutableRefObject<any>
+    elementRef: MutableRefObject<any>
+    elementInitialRef: MutableRefObject<any>
 }
 
 const PageContext = createContext<PageContextType | undefined>(undefined,)
@@ -50,6 +52,8 @@ export function PageWrapper({ children } : ChildrenProps) {
     const [itemsLength, setItemsLength] = useState(pageOne.itemsLength)
     const timeoutIdRef = useRef()
     const timeoutIdInitialRef = useRef()
+    const elementRef = useRef()
+    const elementInitialRef = useRef()
 
     const pageChange = useCallback(() => handlePageChange({setLoading, currentPage, setCurrentPage, totalPages, itemsLength, setHasMore, itemsPerPage, items, setItems, hasMore, timeoutIdRef}), [currentPage, hasMore, items, itemsLength, itemsPerPage, totalPages, timeoutIdRef])
 
@@ -71,6 +75,8 @@ export function PageWrapper({ children } : ChildrenProps) {
         pageChangeInitial,
         timeoutIdRef,
         timeoutIdInitialRef,
+        elementRef,
+        elementInitialRef,
     }), [
         loading, setLoading,        
         isVisible, setIsVisible,        
@@ -87,6 +93,8 @@ export function PageWrapper({ children } : ChildrenProps) {
         pageChangeInitial,
         timeoutIdRef,
         timeoutIdInitialRef,
+        elementRef,
+        elementInitialRef,
     ])
 
     return ( 

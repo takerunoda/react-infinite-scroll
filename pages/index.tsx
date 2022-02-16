@@ -1,15 +1,14 @@
 import React from 'react'
-import CreatedFor from '../Components/CreatedFor'
-import Item from '../Components/Item'
-import LoaderSmall from '../Components/LoaderSmall'
-import getItemsByPage from '../utils/getItemsByPage'
-import { useHandleObserverInitial } from '../utils/useHandleObserverInitial'
-import { useHandleObserver } from '../utils/useHandleObserver'
-import { DataProps } from '../utils/interface'
-import Reload from '../Components/Reload'
 import { usePageContext } from '../context/PageContext'
+import Item from '../Components/Item'
+import Reload from '../Components/Reload'
+import CreatedFor from '../Components/CreatedFor'
+import LoaderSmall from '../Components/LoaderSmall'
 import FirstElement from '../Components/FirstElement'
-
+import { DataProps } from '../utils/interface'
+import getItemsByPage from '../utils/getItemsByPage'
+import { useHandleObserver } from '../utils/useHandleObserver'
+import { useHandleObserverInitial } from '../utils/useHandleObserverInitial'
 
 interface PageProps { 
   initialData: DataProps[]
@@ -20,10 +19,10 @@ interface PageProps {
 const Index = ({initialData} : PageProps) => {
 
   const pageContext = usePageContext()
-  const {loading, isVisible, isVisibleInitial, hasMore, items, element, setElement,        
-        elementInitial, setElementInitial, currentPage} = pageContext
-  useHandleObserver({ element})  
-  useHandleObserverInitial({ elementInitial})  
+  const {loading, items, element, setElement,        
+        elementInitial, setElementInitial, elementRef, elementInitialRef} = pageContext
+  useHandleObserver()
+  useHandleObserverInitial()  
 
   return (
     <>
@@ -43,18 +42,20 @@ const Index = ({initialData} : PageProps) => {
                     if(index + 1 === initialData.length){
                         return <Item 
                         item={item} 
-                        setElement={setElementInitial} 
+                        setElement={setElementInitial}
+                        elementRef={elementInitialRef}
                         key={index}
                         last={true} />
                     } else {
                         return <Item 
                         item={item} 
                         setElement={setElementInitial} 
+                        elementRef={elementInitialRef}
                         key={index}
                         last={false} />
                     }
                 })}
-      <div className="text-lg sm:text-xl font-bold px-3 mt-3">
+      <div className="text-lg sm:text-xl font-bold px-3">
         <p>＊最後のアイテム(2)が隠れると、</p>
         <p>true/falseが切り替わります</p>
       </div>
@@ -64,12 +65,14 @@ const Index = ({initialData} : PageProps) => {
                         return <Item 
                         item={item} 
                         setElement={setElement} 
+                        elementRef={elementRef}
                         key={index}
                         last={true} />
                     } else {
                         return <Item 
                         item={item} 
                         setElement={setElement} 
+                        elementRef={elementRef}
                         key={index}
                         last={false} />
                     }

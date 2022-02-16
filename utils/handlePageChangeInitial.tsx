@@ -39,7 +39,7 @@ interface FunctionProps {
                     console.log(`currentPage: ${currentPage}`)
                     setHasMore(itemsLeft > 0)
                     setLoading(false)
-                }, 2000);
+                }, 1000);
                 clearTimeout(timeoutIdInitialRef.current)
                 timeoutIdInitialRef.current = timeoutFunction
             }
