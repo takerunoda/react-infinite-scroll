@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
 import { usePageContext } from '../context/PageContext'
 
-interface FunctionProps {
-    element: any
-}
+// interface FunctionProps {
+//     element: any
+// }
 
 export const useHandleObserver = () => {
         const pageContext = usePageContext()
